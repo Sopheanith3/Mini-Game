@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird Game</title>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #87CEEB;
-        }
-    </style>
-</head>
-<body>
-    <script src="GameComponent.js"></script>
-    <script src="GameArea.js"></script>
-    <script src="Player.js"></script>
-    <script src="Score.js"></script>
-    <script src="GameOver.js"></script>
-    <script src="Main.js"></script>
-</body>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title> Flappy Bird Clone, Feb 2018, Chloe Yu </title>
+
+        <style type="text/css">
+        	body{
+        		background-color: black;
+        		cursor:url(assets/cursor.cur), auto;
+        	}
+            canvas {
+                padding-left: 0;
+                padding-right: 0;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+            }
+        </style>
+
+    </head>
+
+
+    <body onload="startGame()" style="overflow:hidden">
+        <script src="game.js" defer></script>
+        <script src="player.js" defer></script>
+        <script src="main.js" defer></script>
+    </body>
 </html>
