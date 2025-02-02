@@ -7,7 +7,7 @@ class Game {
         this.frameNo = 0;
         this.obstacles = [];
         this.score = new TextComponent("30px", "Consolas", "black", 1200, 50);
-        this.background = new BackgroundComponent(1400, 660, "assets/background.png", 0, 0);
+        this.background = new BackgroundComponent(1400, 660, "assets/background2.jpg", 0, 0);
         this.land = new BackgroundComponent(400, 150, "assets/land.png", 0, 650);
         this.gameOverImage = new ImageComponent(140, 140, "assets/gameover.png", 600, 300);
         this.player = new Player(70, 70, "assets/bird1.png", 700, 245);
