@@ -10,7 +10,7 @@ class Game {
         this.background = new BackgroundComponent(1400, 660, "assets/background2.jpg", 0, 0);
         this.land = new BackgroundComponent(1400, 150, "assets/land.png", 0, 650);
         this.gameOverImage = new ImageComponent(900, 600, "assets/gameover2.png", 280, 60);
-        this.player = new Player(70, 70, "assets/bird1.png", 700, 245);
+        this.player = new Player(50, 50, "assets/bird1.png", 700, 245);
         this.isGameOver = false;
         this.gameStarted = false;
         
@@ -89,7 +89,7 @@ class Game {
         this.frameNo = 0;
         this.obstacles = [];
         this.isGameOver = false;
-        this.player = new Player(70, 70, "assets/bird1.png", 700, 245);
+        this.player = new Player(50, 50, "assets/bird1.png", 700, 245);
         this.interval = setInterval(() => this.updateGameArea(), 6);
     }
 
