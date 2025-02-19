@@ -9,18 +9,28 @@ class Game {
         this.score = new TextComponent("30px", "Consolas", "black", 1200, 50);
         this.background = new BackgroundComponent(1400, 660, "assets/background2.jpg", 0, 0);
         this.land = new BackgroundComponent(1400, 150, "assets/land.png", 0, 650);
-        this.gameOverImage = new ImageComponent(140, 140, "assets/gameover2.png", 600, 300);
+        this.gameOverImage = new ImageComponent(900, 600, "assets/gameover2.png", 280, 60);
         this.player = new Player(70, 70, "assets/bird1.png", 700, 245);
         this.isGameOver = false;
         this.gameStarted = false;
         
-        // Add welcome text component
+        // Welcome screen text
         this.welcomeText = new TextComponent("35px", "Consolas", "white", 410, 390);
         this.welcomeText.text = "WELCOME TO FLAPPY ANGRY BIRD";
-        
-        // Move start text down a bit to make room for welcome text
         this.startText = new TextComponent("30px", "Consolas", "white", 500, 450);
         this.startText.text = "PRESS ANY KEY TO START";
+
+        // Load restart image
+        this.restartImage = new Image();
+        this.restartImage.src = "assets/restart.png"; // Path to restart button PNG
+
+        // Define restart button area
+        this.restartButton = {
+            x: 623, // Adjust X position
+            y: 530, // Adjust Y position
+            width: 210, // Match image width
+            height: 105  // Match image height
+        };
     }
 
     start() {
@@ -45,6 +55,19 @@ class Game {
             }
         };
 
+        // Click handler for restart button
+        this.canvas.addEventListener('click', (e) => {
+            if (this.isGameOver) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                if (this.isClickOnRestartButton(x, y)) {
+                    this.restartGame();
+                }
+            }
+        });
+
         window.addEventListener('keydown', (e) => {
             startGameHandler(e);
             gameplayHandler(e);
@@ -55,17 +78,31 @@ class Game {
         });
     }
 
+    isClickOnRestartButton(x, y) {
+        return x >= this.restartButton.x &&
+               x <= this.restartButton.x + this.restartButton.width &&
+               y >= this.restartButton.y &&
+               y <= this.restartButton.y + this.restartButton.height;
+    }
+
+    restartGame() {
+        this.frameNo = 0;
+        this.obstacles = [];
+        this.isGameOver = false;
+        this.player = new Player(70, 70, "assets/bird1.png", 700, 245);
+        this.interval = setInterval(() => this.updateGameArea(), 6);
+    }
+
     showStartScreen() {
         this.clear();
         this.background.update(this.context);
         this.land.update(this.context);
         this.player.update(this.context);
         
-        // Add semi-transparent overlay
+        // Semi-transparent overlay
         this.context.fillStyle = "rgba(0, 0, 0, 0.5)";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // Draw both welcome and start texts
         this.welcomeText.update(this.context);
         this.startText.update(this.context);
     }
@@ -73,6 +110,18 @@ class Game {
     stop() {
         clearInterval(this.interval);
         this.isGameOver = true;
+        
+        // Draw game over image
+        this.gameOverImage.update(this.context);
+
+        // Draw restart button image
+        this.context.drawImage(
+            this.restartImage, 
+            this.restartButton.x, 
+            this.restartButton.y, 
+            this.restartButton.width, 
+            this.restartButton.height
+        );
     }
 
     clear() {
@@ -172,23 +221,18 @@ class BackgroundComponent extends ImageComponent {
     constructor(width, height, imageSrc, x, y) {
         super(width, height, imageSrc, x, y);
         this.speedX = 0;
-        this.initialX = x;  // Store initial X position
+        this.initialX = x;
     }
 
     updatePosition() {
         this.x += this.speedX;
-        
-        // Reset position when it moves out by the image width
         if (this.x <= -this.width) {
             this.x = 0;
         }
     }
 
     update(ctx) {
-        // Draw the current image
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-        
-        // Draw the second image right after the first one
         ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
     }
 }
