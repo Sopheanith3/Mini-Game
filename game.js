@@ -8,22 +8,65 @@ class Game {
         this.obstacles = [];
         this.score = new TextComponent("30px", "Consolas", "black", 1200, 50);
         this.background = new BackgroundComponent(1400, 660, "assets/background2.jpg", 0, 0);
-        // Updated land component with proper width to match the canvas
         this.land = new BackgroundComponent(1400, 150, "assets/land.png", 0, 650);
         this.gameOverImage = new ImageComponent(140, 140, "assets/gameover2.png", 600, 300);
         this.player = new Player(70, 70, "assets/bird1.png", 700, 245);
         this.isGameOver = false;
+        this.gameStarted = false;
+        
+        // Add start screen text component
+        this.startText = new TextComponent("35px", "Consolas", "white", 500, 400);
+        this.startText.text = "PRESS ANY KEY TO START";
     }
 
     start() {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.setupEventListeners();
-        this.interval = setInterval(() => this.updateGameArea(), 6);
+        this.showStartScreen();
     }
 
     setupEventListeners() {
-        window.addEventListener('keydown', () => this.player.jump());
-        window.addEventListener('mousedown', () => this.player.jump());
+        // Modified event listeners to handle game start
+        const startGameHandler = (e) => {
+            if (!this.gameStarted) {
+                this.gameStarted = true;
+                this.interval = setInterval(() => this.updateGameArea(), 6);
+                // Remove the start game event listeners once game starts
+                window.removeEventListener('keydown', startGameHandler);
+                window.removeEventListener('mousedown', startGameHandler);
+            }
+        };
+
+        const gameplayHandler = (e) => {
+            if (this.gameStarted && !this.isGameOver) {
+                this.player.jump();
+            }
+        };
+
+        // Add both start game and gameplay handlers
+        window.addEventListener('keydown', (e) => {
+            startGameHandler(e);
+            gameplayHandler(e);
+        });
+        window.addEventListener('mousedown', (e) => {
+            startGameHandler(e);
+            gameplayHandler(e);
+        });
+    }
+
+    showStartScreen() {
+        // Draw the initial game state
+        this.clear();
+        this.background.update(this.context);
+        this.land.update(this.context);
+        this.player.update(this.context);
+        
+        // Add semi-transparent overlay
+        this.context.fillStyle = "rgba(0, 0, 0, 0.12)";
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Draw start text
+        this.startText.update(this.context);
     }
 
     stop() {
