@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Flappy Angry Bird Lite</title>
+<head>
+    <meta charset="utf-8" />
+    <title>Flappy Angry Bird Lite</title>
+    <style>
+        body {
+            background-color: black;
+            cursor: url(assets/cursor.cur), auto;
+        }
+        canvas {
+            display: block;
+            margin: auto;
+        }
+        #debug-container {
+            text-align: center;
+            margin-top: 10px;
+            color: white;
+        }
+    </style>
+</head>
+<body onload="startGame()" style="overflow:hidden">
 
-        <style type="text/css">
-        	body{
-        		background-color: black;
-        		cursor:url(assets/cursor.cur), auto;
-        	}
-            canvas {
-                padding-left: 0;
-                padding-right: 0;
-                margin-left: auto;
-                margin-right: auto;
-                display: block;
-            }
-        </style>
+    <div id="debug-container">
+        <label>
+            <input type="checkbox" id="debugMode"> Show Bounding Boxes
+        </label>
+    </div>
 
-    </head>
+    <script src="game.js" defer></script>
+    <script src="player.js" defer></script>
+    <script src="main.js" defer></script>
 
-
-    <body onload="startGame()" style="overflow:hidden">
-        <script src="game.js" defer></script>
-        <script src="player.js" defer></script>
-        <script src="main.js" defer></script>
-    </body>
+</body>
 </html>

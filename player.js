@@ -11,8 +11,18 @@ class Player {
         this.jumpStrength = -2;
     }
 
-    update(ctx) {
+    update(ctx, debugMode = false) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+
+        if (debugMode) {
+            ctx.strokeStyle = "yellow";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(this.x, this.y, this.width, this.height);
+        }
+    }
+
+    jump() {
+        this.gravitySpeed = this.jumpStrength;
     }
 
     updatePosition(canvasHeight) {
@@ -23,10 +33,6 @@ class Player {
             this.y = canvasHeight - this.height - 140;
             this.gravitySpeed = 0;
         }
-    }
-
-    jump() {
-        this.gravitySpeed = this.jumpStrength;
     }
 
     crashWith(other) {
