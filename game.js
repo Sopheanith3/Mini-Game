@@ -14,8 +14,12 @@ class Game {
         this.isGameOver = false;
         this.gameStarted = false;
         
-        // Add start screen text component
-        this.startText = new TextComponent("35px", "Consolas", "white", 500, 400);
+        // Add welcome text component
+        this.welcomeText = new TextComponent("35px", "Consolas", "white", 410, 390);
+        this.welcomeText.text = "WELCOME TO FLAPPY ANGRY BIRD";
+        
+        // Move start text down a bit to make room for welcome text
+        this.startText = new TextComponent("30px", "Consolas", "white", 500, 450);
         this.startText.text = "PRESS ANY KEY TO START";
     }
 
@@ -26,12 +30,10 @@ class Game {
     }
 
     setupEventListeners() {
-        // Modified event listeners to handle game start
         const startGameHandler = (e) => {
             if (!this.gameStarted) {
                 this.gameStarted = true;
                 this.interval = setInterval(() => this.updateGameArea(), 6);
-                // Remove the start game event listeners once game starts
                 window.removeEventListener('keydown', startGameHandler);
                 window.removeEventListener('mousedown', startGameHandler);
             }
@@ -43,7 +45,6 @@ class Game {
             }
         };
 
-        // Add both start game and gameplay handlers
         window.addEventListener('keydown', (e) => {
             startGameHandler(e);
             gameplayHandler(e);
@@ -55,17 +56,17 @@ class Game {
     }
 
     showStartScreen() {
-        // Draw the initial game state
         this.clear();
         this.background.update(this.context);
         this.land.update(this.context);
         this.player.update(this.context);
         
         // Add semi-transparent overlay
-        this.context.fillStyle = "rgba(0, 0, 0, 0.12)";
+        this.context.fillStyle = "rgba(0, 0, 0, 0.5)";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // Draw start text
+        // Draw both welcome and start texts
+        this.welcomeText.update(this.context);
         this.startText.update(this.context);
     }
 
@@ -101,12 +102,10 @@ class Game {
     }
 
     updateBackground() {
-        // Move background
         this.background.speedX = -1;
         this.background.updatePosition();
         this.background.update(this.context);
     
-        // Move land at the same speed as background
         this.land.speedX = -1;
         this.land.updatePosition();
         this.land.update(this.context);
