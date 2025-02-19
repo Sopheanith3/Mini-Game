@@ -214,8 +214,15 @@ class ImageComponent {
 
     update(ctx) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+
+        if (document.getElementById("debugMode").checked) {
+            ctx.strokeStyle = "yellow";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(this.x, this.y, this.width, this.height);
+        }
     }
 }
+
 
 class BackgroundComponent extends ImageComponent {
     constructor(width, height, imageSrc, x, y) {
@@ -234,5 +241,12 @@ class BackgroundComponent extends ImageComponent {
     update(ctx) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
+
+        // Draw bounding box only for the LAND component
+        if (document.getElementById("debugMode").checked && this.y > 600) { 
+            ctx.strokeStyle = "yellow";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(this.x, this.y, this.width, this.height);
+        }
     }
 }

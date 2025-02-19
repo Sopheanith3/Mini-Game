@@ -11,10 +11,10 @@ class Player {
         this.jumpStrength = -2;
     }
 
-    update(ctx, debugMode = false) {
+    update(ctx) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
 
-        if (debugMode) {
+        if (document.getElementById("debugMode").checked) {
             ctx.strokeStyle = "yellow";
             ctx.lineWidth = 2;
             ctx.strokeRect(this.x, this.y, this.width, this.height);
