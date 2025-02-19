@@ -8,7 +8,8 @@ class Game {
         this.obstacles = [];
         this.score = new TextComponent("30px", "Consolas", "black", 1200, 50);
         this.background = new BackgroundComponent(1400, 660, "assets/background2.jpg", 0, 0);
-        this.land = new BackgroundComponent(400, 150, "assets/land.png", 0, 650);
+        // Updated land component with proper width to match the canvas
+        this.land = new BackgroundComponent(1400, 150, "assets/land.png", 0, 650);
         this.gameOverImage = new ImageComponent(140, 140, "assets/gameover2.png", 600, 300);
         this.player = new Player(70, 70, "assets/bird1.png", 700, 245);
         this.isGameOver = false;
@@ -57,10 +58,12 @@ class Game {
     }
 
     updateBackground() {
+        // Move background
         this.background.speedX = -1;
         this.background.updatePosition();
         this.background.update(this.context);
-
+    
+        // Move land at the same speed as background
         this.land.speedX = -1;
         this.land.updatePosition();
         this.land.update(this.context);
@@ -127,12 +130,23 @@ class BackgroundComponent extends ImageComponent {
     constructor(width, height, imageSrc, x, y) {
         super(width, height, imageSrc, x, y);
         this.speedX = 0;
+        this.initialX = x;  // Store initial X position
     }
 
     updatePosition() {
         this.x += this.speedX;
+        
+        // Reset position when it moves out by the image width
         if (this.x <= -this.width) {
             this.x = 0;
         }
+    }
+
+    update(ctx) {
+        // Draw the current image
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        
+        // Draw the second image right after the first one
+        ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
     }
 }
